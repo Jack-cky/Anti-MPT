@@ -1,0 +1,15 @@
+__pycache__/
+.ipynb_checkpoints/
+antimpt/logs/
+antimpt/models/
+antimpt/results/
+antimpt.egg-info/
+data/
+imgs/sources/
+venv/
+.DS_Store
+.env
+cheatsheet.sh
+trading_floor.py
+dataset.py
+02_feature_engineering.ipynb

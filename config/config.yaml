@@ -1,0 +1,13 @@
+allowed_hosts:
+  - "*"
+agent:
+  algorithm: Ensemble
+  experiment: "00"
+  snapshot: "1_000_000"
+equity:
+  from: 2025
+  to: 2047
+  ticker: WSM
+debug: false
+language_code: "en-us"
+timezone: "Asia/Hong_Kong"

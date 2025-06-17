@@ -1,0 +1,199 @@
+body {
+  background: #f4f6fa;
+  font-family: "Inter", sans-serif;
+  padding: 24px 0;
+}
+
+.container-fluid {
+  padding-left: 32px;
+  padding-right: 32px;
+  max-width: 1400px;
+}
+
+.dashboard-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0.1rem 0;
+  color: #222b45;
+}
+
+.dashboard-subtitle {
+  font-size: 0.9rem;
+  color: #7b8a9e;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.card-stat {
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.8rem 0.7rem;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.card-stat .icon {
+  font-size: 1.3rem;
+  color: #fff;
+  background: linear-gradient(135deg, #ffb347 60%, #ffcc80 100%);
+  border-radius: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-stat .stat-label {
+  font-size: 0.85rem;
+  color: #7b8a9e;
+  font-weight: 500;
+}
+
+.card-stat .stat-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222b45;
+}
+
+.card-shadow {
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+  border-radius: 0.7rem;
+  background: #fff;
+  padding: 1rem;
+}
+
+.chart-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222b45;
+  margin-bottom: 0.5rem;
+}
+
+.text-muted.py-5 {
+  padding-top: 2rem!important;
+  padding-bottom: 2rem!important;
+  font-size: 0.95rem;
+}
+
+.g-3, .gy-3 {
+  --bs-gutter-y: 1rem;
+}
+
+.g-3, .gx-3 {
+  --bs-gutter-x: 1rem;
+}
+
+.plot-container {
+  height: 28vw;
+  min-height: 180px;
+  max-height: 340px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.plot-container .plotly-graph-div {
+  height: 100% !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.popup-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.7rem;
+  box-shadow: 0 4px 12px rgba(44,62,80,0.15);
+  z-index: 1001;
+  width: 70%;
+}
+
+.popup-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222b45;
+  margin-bottom: 1rem;
+}
+
+.popup-content {
+  color: #4a5568;
+  margin-bottom: 1.5rem;
+}
+
+.popup-button {
+  background: linear-gradient(135deg, #1e3a5c 60%, #3a7bd5 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.popup-button:hover {
+  background: linear-gradient(135deg, #2a4d78 60%, #4b8ce6 100%);
+}
+
+@media (max-width: 991px) {
+  .container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .dashboard-title {
+    font-size: 1.1rem;
+  }
+  .card-stat .stat-value {
+    font-size: 1rem;
+  }
+  .card-shadow {
+    padding: 0.7rem;
+  }
+  .plot-container {
+    height: 38vw;
+    min-height: 140px;
+    max-height: 260px;
+    aspect-ratio: 16/9;
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboard-title {
+    font-size: 1rem;
+  }
+  .card-stat .stat-value {
+    font-size: 0.9rem;
+  }
+  .card-shadow {
+    padding: 0.5rem;
+  }
+  .plot-container {
+    height: 48vw;
+    min-height: 120px;
+    max-height: 200px;
+    aspect-ratio: 4/3;
+  }
+}
