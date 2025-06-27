@@ -7,7 +7,7 @@ create:
 
 install:
 	$(VENV_PATH)/bin/pip install -r requirements.txt
-	$(VENV_PATH)/bin/pip install -e . --use-pep517
+	$(VENV_PATH)/bin/pip install -e . --use-pep517 --no-deps
 
 setup: create install
 

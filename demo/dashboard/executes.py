@@ -3,7 +3,7 @@ from django.conf import settings
 from django.http import JsonResponse
 
 from antimpt import AntiMPT
-from antimpt.utils import take_positions, get_equities, consolidate_data
+from antimpt.utils import consolidate_data, get_equities, take_positions
 from dashboard.models import Dashboard
 
 
@@ -15,15 +15,21 @@ def update_database(df: pd.DataFrame) -> None:
 
 
 def pipeline(request) -> JsonResponse:
-    agent = AntiMPT(settings.AGENT["algorithm"], artefact=settings.AGENT.values())
+    if request.GET.get("secret") == settings.SECRET_PIPELINE:
+        try:
+            agent = AntiMPT(
+                settings.AGENT["algorithm"],
+                artefact=settings.AGENT.values(),
+            )
 
-    equity = get_equities(*settings.EQUITY.values(), "yfinance")[0]
-    histories = take_positions(agent, equity, render_mode="robot")
+            equity = get_equities(*settings.EQUITY.values(), "yfinance")[0]
+            histories = take_positions(agent, equity, render_mode="robot")
 
-    df = consolidate_data(equity, histories, "yfinance")
-    update_database(df)
+            df = consolidate_data(equity, histories, "yfinance")
+            update_database(df)
+        except Exception:
+            return JsonResponse({"status": "failed"})
+    else:
+        return JsonResponse({"status": "invalid secret"})
 
-    return JsonResponse({
-        "status": 200,
-        "message": "Commpleted",
-    })
+    return JsonResponse({"status": "commpleted"})

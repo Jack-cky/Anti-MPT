@@ -8,5 +8,5 @@ app_name = "anitmpt-dashboard"
 
 urlpatterns = [
     path("", dashboard, name="dashboard"),
-    path("update", pipeline, name="pipeline"),
+    path("api/v1/update", pipeline, name="pipeline"),
 ]

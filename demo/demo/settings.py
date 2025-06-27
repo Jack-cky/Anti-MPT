@@ -9,12 +9,10 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
 import os
-import yaml
-
 from pathlib import Path
 
+import yaml
 from dotenv import load_dotenv
 
 
@@ -32,7 +30,8 @@ with open(PROJECT_ROOT / "config" / "config.yaml", "r") as f:
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY", "TOP SECRET")
+SECRET_KEY = os.getenv("SECRET_KEY", "TOP_SECRET")
+SECRET_PIPELINE = os.getenv("SECRET_PIPELINE", "TOP_SECRET")
 
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = config.get("debug", True)

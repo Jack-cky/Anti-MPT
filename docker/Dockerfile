@@ -9,15 +9,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+COPY antimpt/ antimpt/
+COPY requirements.txt pyproject.toml setup.py ./
 
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir torch torchvision torchaudio \
+RUN python -m venv /opt/venv && \
+    /opt/venv/bin/pip install --no-cache-dir --upgrade pip && \
+    /opt/venv/bin/pip install --no-cache-dir torch torchvision torchaudio \
     --index-url https://download.pytorch.org/whl/cpu && \
-    pip install --no-cache-dir -r requirements.txt
+    /opt/venv/bin/pip install --no-cache-dir -r requirements.txt && \
+    /opt/venv/bin/pip install . --no-deps
 
 # final stage
 FROM ${PYTHON_IMAGE}
@@ -25,14 +25,12 @@ FROM ${PYTHON_IMAGE}
 WORKDIR /antimpt
 
 COPY --from=builder /opt/venv /opt/venv
+
 ENV PATH="/opt/venv/bin:$PATH"
 
 COPY antimpt/ antimpt/
 COPY demo/ demo/
 COPY config/ config/
-COPY pyproject.toml setup.py ./
-
-RUN pip install -e . --no-deps
 
 # execution
 RUN useradd -m viewer && \

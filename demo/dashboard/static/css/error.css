@@ -1,9 +1,14 @@
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
   font-family: Arial, sans-serif;
-  background: #f8f9fa;
   color: #333;
+  background: #f8f9fa;
   text-align: center;
-  padding: 60px;
 }
 
 h1 {
@@ -32,4 +37,8 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+p {
+  margin: 0.5em 0;
 }

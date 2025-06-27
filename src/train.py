@@ -1,7 +1,7 @@
 import argparse
 
 from antimpt import AntiMPT
-from antimpt.utils import get_equities, create_envs
+from antimpt.utils import create_envs, get_equities
 
 
 def parse_args() -> argparse.Namespace:
