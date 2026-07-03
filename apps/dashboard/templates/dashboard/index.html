@@ -1,0 +1,129 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://fav.farm/&#128184;"/>
+    <title>Anti-MPT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+    <main class="container-fluid dashboard-page">
+      <header class="dashboard-header">
+        <h1 class="dashboard-title">Anti-MPT&apos;s Performance Dashboard</h1>
+        <p class="dashboard-subtitle">
+          Anti-MPT is risk-seeking and argues against the diversification emphasised in Modern Portfolio Theory. It frequently trades a single stock, aiming to reenact the <i>buy low, sell high</i> strategy as often as possible. It embraces volatility to fill your pockets with cash, because <i>anti-empty</i> is the name of the game.
+        </p>
+      </header>
+      {% if has_data %}
+      <section class="row g-3 mb-3 align-items-stretch" aria-label="Performance summary">
+        <div class="col-md-3 col-6">
+          <article class="card-stat">
+            <div class="icon">&#129302;</div>
+            <div class="stat-content">
+              <div class="stat-label">Portfolio Manager</div>
+              <form id="agentSelectForm" class="agent-select-form" method="get">
+                <div class="agent-select-controls">
+                  <select id="agentSelect" name="agent" class="form-select agent-select">
+                    {% for agent_summary in agent_summaries %}
+                    <option value="{{ agent_summary.agent }}" {% if agent_summary.agent == selected_agent %}selected{% endif %}>
+                      {{ agent_summary.agent }}{% if agent_summary.agent == best_agent %} (Best){% endif %}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </form>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-3 col-6">
+          <article class="card-stat">
+            <div class="icon">&#127974;</div>
+            <div class="stat-content">
+              <div class="stat-label">Current Value</div>
+              <div class="stat-value {% if portfolio > funds %}stat-value-positive{% else %}stat-value-negative{% endif %}">
+                ${{ portfolio|floatformat:1|intcomma }}
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-3 col-6">
+          <article class="card-stat">
+            <div class="icon">&#128176;</div>
+            <div class="stat-content">
+              <div class="stat-label">Overall Return</div>
+              <div class="stat-value {% if return > 0 %}stat-value-positive{% else %}stat-value-negative{% endif %}">
+                {{ return|floatformat:0 }}%
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-3 col-6">
+          <article class="card-stat">
+            <div class="icon">&#127919;</div>
+            <div class="stat-content">
+              <div class="stat-label">Sharpe Ratio</div>
+              <div class="stat-value">{{ sharpe_ratio|floatformat:1 }}</div>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section class="row g-3" aria-label="Performance charts">
+        <div class="col-lg-6">
+          <div class="card-shadow mb-2">
+            <div class="plot-container">
+              {{ plot_actions|safe }}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card-shadow mb-2">
+            <div class="plot-container">
+              {{ plot_returns|safe }}
+            </div>
+          </div>
+        </div>
+      </section>
+      {% else %}
+      <section class="alert alert-info mt-4" role="alert">
+        Portfolio data has not been generated yet. Run the `update_dashboard` management command to populate the dashboard, then refresh this page.
+      </section>
+      <section class="card-shadow mb-2">
+        <div class="p-4">
+          <h2 class="h5 mb-3">Configured Agents</h2>
+          <div class="agent-pill-group">
+            {% for agent in configured_agents %}
+            <span class="agent-pill">{{ agent }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+      {% endif %}
+      {% if has_data %}
+      <footer class="dashboard-footer text-end">
+        <small class="text-muted">Last updated: {{ last_update|date:"Y-m-d H:i" }} {{ display_timezone }}</small>
+      </footer>
+      {% endif %}
+    </main>
+
+    <div id="popupOverlay" class="popup-overlay" hidden></div>
+    <section id="popupContainer" class="popup-container" role="dialog" aria-modal="true" aria-labelledby="popupTitle" hidden>
+      <h2 id="popupTitle" class="popup-title">Welcome to the dashboard for Anti-MPT</h2>
+      <div class="popup-content">
+        <p>
+          This dashboard allows you to review Anti-MPT&apos;s performance and see how it compares with Modern Portfolio Theory, using a reference index as a proxy. You can find more details <a href="https://github.com/Jack-cky/Anti-MPT" target="_blank" rel="noopener noreferrer">here</a>.
+        </p>
+        <p>
+          We do not provide financial advice. Any actions taken based on the information presented in this dashboard are at your own risk, and the owner assumes no responsibility for financial decisions made or losses incurred.
+        </p>
+      </div>
+      <button id="popupButton" class="popup-button" type="button">Got it</button>
+    </section>
+
+    <script src="{% static 'js/script.js' %}"></script>
+  </body>
+</html>

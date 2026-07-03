@@ -1,0 +1,70 @@
+name: Scheduled Pipeline
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 13 * * 2-6"
+      timezone: "Asia/Hong_Kong"
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    environment: mvp-pipeline
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Prepare runtime files
+        run: |
+          mkdir -p config data
+          cat > config/.env <<EOF
+          DB_HOST=${DB_HOST:?}
+          DB_NAME=${DB_NAME:?}
+          DB_PASSWORD=${DB_PASSWORD:?}
+          DB_PORT=${DB_PORT:?}
+          DB_USER=${DB_USER:?}
+          EOF
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+
+      - name: Download checkpoints
+        run: |
+          mkdir -p checkpoints/A2C/01 checkpoints/PPO/00
+          wget \
+            --header="Authorization: Bearer $HF_TOKEN" \
+            --tries=3 \
+            --waitretry=10 \
+            --retry-on-http-error=429,502,503,504 \
+            -O checkpoints/A2C/01/1_000_000.zip \
+            "https://huggingface.co/Jack-cky/Anti-MPT/resolve/main/checkpoints/A2C/01/1_000_000.zip"
+          wget \
+            --header="Authorization: Bearer $HF_TOKEN" \
+            --tries=3 \
+            --waitretry=10 \
+            --retry-on-http-error=429,502,503,504 \
+            -O checkpoints/PPO/00/7_000_000.zip \
+            "https://huggingface.co/Jack-cky/Anti-MPT/resolve/main/checkpoints/PPO/00/7_000_000.zip"
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
+      - name: Run pipeline
+        run: |
+          make pipeline || \
+            (sleep 10 && make pipeline) || \
+            (sleep 10 && make pipeline) || \
+            exit 1
+        env:
+          HOST_UID: "0"
+          HOST_GID: "0"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: pipeline-artifacts
+          path: |
+            data/
+          retention-days: 7

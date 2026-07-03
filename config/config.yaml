@@ -1,13 +1,19 @@
-allowed_hosts:
-  - "*"
-agent:
-  algorithm: Ensemble
-  experiment: "00"
-  snapshot: "1_000_000"
-equity:
-  from: 2025
-  to: 2047
-  ticker: WSM
-debug: false
-language_code: "en-us"
+debug: true
+language_code: "en-uk"
 timezone: "Asia/Hong_Kong"
+
+agents:
+  - algorithm: A2C
+    experiment: "01"
+    snapshot: "1_000_000"
+  - algorithm: Ensemble
+    experiment: ""
+    snapshot: ""
+  - algorithm: PPO
+    experiment: "00"
+    snapshot: "7_000_000"
+
+equity:
+  ticker: WSM
+  yr_from: 2025
+  yr_to: 2047

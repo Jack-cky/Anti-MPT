@@ -1,17 +1,43 @@
-# Change Log
+# Changelog
 
-## [1.0.0] MVP Stage
-### [1.0.2] - 2025-06-27
-Enhancements for security to prevent unauthorised third-party access.
+## [1.1.1] - 2026-07-03
+
+Repository restructuring, dependency management overhaul, and container orchestration integration.
+
+### Added
+- Added container orchestration via Docker Compose `apps/compose.yaml`.
+- Configured `pyproject.toml` to manage project metadata and optional dependencies `dashboard`, `pipeline`.
+- Introduced `notebooks/02_feature_engineering.ipynb` for feature engineering and pre-processing exploration.
+- Configured GitHub Actions workflows under `.github/`.
+- Added Prefect to the `pipeline` dependency group for inference workflow orchestration.
+
+### Changed
+- Refactored `antimpt` core structure into modular components: `environments`, `evaluation`, `market`, `transforms`, `models`, `cli`, and `experiments`.
+- Migrated the Django project directory from `demo/` to `apps/`.
+- Updated `makefile` commands for Docker Compose workflows, e.g. `make build` and `make dashboard`.
+- Elevated the required Python version to `~=3.12.0`.
+- Revised project documentation and branding in `README.md`.
+
+### Fixed
+- Replaced outdated legacy agent scripts and utilities with a consolidated structure.
+- Repurposed legacy files including `requirements.txt`, `setup.py`, and `docker/` configuration.
+
+## [1.0.2] - 2025-06-27
+
+Enhanced security to prevent unauthorised third-party access.
+
 ### Added
 - Implemented a `robots.txt` file to disallow web crawling.
+
 ### Changed
-- Adjusted scripts writing orders for better reading.
+- Adjusted order-writing scripts for better readability.
 - Modified error page styles to enhance user experience.
 - Updated the trade history pipeline to utilise the new API with password protection.
 - Improved the Dockerfile for better package management.
+
 ### Fixed
 - Revised the `.dockerignore` file to prevent the exposure of sensitive credentials.
 
-### [1.0.1] - 2025-06-17
+## [1.0.1] - 2025-06-17
+
 Initial repository.

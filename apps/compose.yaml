@@ -1,0 +1,37 @@
+name: antimpt
+
+services:
+  dashboard:
+    image: jackcky/antimpt-dashboard:latest
+    container_name: antimpt-dashboard
+    platform: linux/amd64
+    build:
+      context: ..
+      dockerfile: apps/Dockerfile
+      target: dashboard
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../config/.env
+    restart: unless-stopped
+
+  pipeline:
+    image: jackcky/antimpt-pipeline:latest
+    container_name: antimpt-pipeline
+    platform: linux/amd64
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    environment:
+      DO_NOT_TRACK: "1"
+      HOME: /tmp
+      MPLCONFIGDIR: /tmp/matplotlib
+      PREFECT_SERVER_ANALYTICS_ENABLED: "false"
+    build:
+      context: ..
+      dockerfile: apps/Dockerfile
+      target: pipeline
+    volumes:
+      - ../checkpoints:/app/checkpoints:ro
+      - ../data:/app/data
+    env_file:
+      - ../config/.env
+    restart: "no"
