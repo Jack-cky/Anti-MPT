@@ -101,6 +101,9 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT"),
+        "OPTIONS": {
+            "init_command": "SET SESSION wait_timeout = 600",
+        },
     }
 }
 

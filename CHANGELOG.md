@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.1] - 2026-08-15
+
+Pipeline resilience and deployment workflow improvements.
+
+### Added
+- Added `make pull` target to fetch the latest pipeline container image from Docker Hub.
+- Introduced retry logic with a delay-based retry policy to the `persist_snapshot` task for improved reliability during database writes.
+- Committed the initial `dashboard` migration so a fresh database can be initialised with `manage.py migrate`.
+
+### Changed
+- Expanded `.gitignore` with comprehensive Python packaging patterns and environment management exclusions.
+- Restructured GitHub Actions scheduled pipeline workflow to separate image pulling from pipeline execution with retry loop.
+- Updated `docker compose run pipeline` to never pull images via `--pull never` flag.
+
+### Fixed
+- Guarded against empty inference output and only wrote the Parquet cache after the database transaction committed successfully.
+- Configured MySQL session `wait_timeout` to 600 seconds so abandoned connections release their locks promptly instead of after the 8-hour server default.
+
 ## [1.1.1] - 2026-07-03
 
 Repository restructuring, dependency management overhaul, and container orchestration integration.

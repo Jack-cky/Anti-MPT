@@ -11,7 +11,7 @@ In contrast, Anti-MPT is risk-seeking and argues against the diversification emp
 <div align="right">
   <a href="https://antimpt.up.railway.app/"><img src="https://custom-icon-badges.demolab.com/badge/Django-092E20?logo=django&logoColor=fff"></a>
   <a href="https://docs.google.com/spreadsheets/d/1hZBngU6REh5M9iyUclPlf8IyO3Iz3ZVW1exo_-vM1ks/pubhtml?gid=928431462&single=true"><img src="https://custom-icon-badges.demolab.com/badge/Backlog-319E4F?logo=Google-Sheets&logoColor=fff"></a>
-  <p><strong>First Published:</strong> 17 June 2025<br><strong>Last Updated:</strong> 03 July 2026</p>
+  <p><strong>First Published:</strong> 17 June 2025<br><strong>Last Updated:</strong> 15 August 2026</p>
 </div>
 
 
@@ -91,7 +91,7 @@ Ages ago, a finance professor introduced a [concept](https://massive.com/blog/gr
 ## Behind the Scenes
 Anti‑MPT relies on market data from **Yahoo Finance**, focusing on [WSM](https://finance.yahoo.com/quote/WSM/) (Williams‑Sonoma, Inc.), [XHB](https://finance.yahoo.com/quote/XHB/) (SPDR S&P Homebuilders ETF), and [IRX](https://finance.yahoo.com/quote/^IRX/) (13‑week Treasury bill rate). These tickers power the Anti‑MPT trading dashboard.
 
-After each market close, a scheduled job orchestrated by **Prefect** fetches the latest data and updates Anti‑MPT’s signals to avoid presenting intra‑day moves as financial advice. Trading history is persisted in **MariaDB** and served through a **Django** backend, which drives a browser‑based dashboard for reviewing and analysing performance.
+After each market close, a scheduled job orchestrated by **Prefect** fetches the latest data and updates Anti‑MPT’s signals to avoid presenting intra‑day moves as financial advice. Trading history is persisted in **MySQL** and served through a **Django** backend, which drives a browser‑based dashboard for reviewing and analysing performance.
 
 The web app runs on a **Railway** Free Plan and the database is hosted on the **Filess.io** free tier. Due to free‑tier limits, downtime and delayed updates may occur, and the dashboard may not refresh immediately after the trading day.
 

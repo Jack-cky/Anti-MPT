@@ -121,7 +121,7 @@ def cache_data(df: pd.DataFrame, pth_out: Path) -> None:
     pth_tmp.replace(pth_out)
 
 
-@task(name="Persist database snapshot")
+@task(name="Persist database snapshot", retries=3, retry_delay_seconds=60)
 def persist_snapshot(df: pd.DataFrame, created_at: pd.Timestamp) -> None:
     if df.empty:
         raise ValueError("No dashboard data was generated.")
