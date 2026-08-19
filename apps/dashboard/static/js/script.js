@@ -54,10 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (popupBtn) {
     popupBtn.addEventListener("click", closePopup);
   }
-
-  if (overlay) {
-    overlay.addEventListener("click", closePopup);
-  }
 });
 
 window.addEventListener("resize", debounce(() => {

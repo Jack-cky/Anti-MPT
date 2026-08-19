@@ -8,6 +8,8 @@ from .benchmarks import get_market_index, get_risk_free
 def consolidate_data(
     equity: pd.DataFrame,
     histories: list[dict[str, bool | float | int | str]],
+    risk_free: pd.DataFrame | None = None,
+    mkt_idx: pd.DataFrame | None = None,
     src: str = "cache",
 ) -> pd.DataFrame:
     equity = equity[["close"]].reset_index(names="date") \
@@ -18,8 +20,10 @@ def consolidate_data(
     results = pd.DataFrame(histories)[["date", "action_taken", "portfolio"]]
     funds = results.at[0, "portfolio"]
 
-    risk_free = get_risk_free(start, end, funds, src=src)
-    mkt_idx = get_market_index(start, funds, src=src)
+    risk_free = risk_free if risk_free is not None \
+        else get_risk_free(start, end, funds, src=src)
+    mkt_idx = mkt_idx if mkt_idx is not None \
+        else get_market_index(start, funds, src=src)
 
     df = equity.merge(results, on="date", how="left") \
         .merge(risk_free, on="date", how="left") \

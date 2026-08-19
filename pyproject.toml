@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "antimpt"
-version = "1.2.1"
+version = "1.2.2"
 description = "Anti-MPT dashboard and pipeline modules"
 license = { text = "MIT" }
 authors = [{ name = "Jack Chan" }]

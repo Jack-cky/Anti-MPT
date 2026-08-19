@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.2] - 2026-08-19
+
+Hardened the inference pipeline against transient yfinance failures and calendar-gap edge cases.
+
+### Changed
+- Cached yfinance fetches per process so benchmark data (`^IRX`, `XHB`) is downloaded once per run instead of once per agent.
+- Copied cached benchmark frames before downstream cleansing so the shared cache remains pristine across agent evaluations.
+- Hoisted benchmark computation into a dedicated `Fetch benchmark data` pipeline task, passing precomputed series into `consolidate_data` so the per-agent inference task performs no network calls.
+- Updated `consolidate_data` to accept precomputed `risk_free` and `mkt_idx` DataFrames for reuse across agents.
+
+### Fixed
+- Raised a clear error when yfinance returns an empty DataFrame instead of failing later with a `KeyError` on the first trading date.
+- Snapped benchmark lookups in `get_risk_free` and `get_market_index` forward to the first available date, guarding against calendar gaps in benchmark data.
+- Stopped the welcome popup from closing on backdrop clicks; it is now dismissed only via the "Got it" button.
+- Added explicit handling for missing benchmark data after the requested start date and corrected the market-index calculation to use the first available value on or after the start date instead of requiring an exact-day match.
+- Added safe `funds=10_000` defaults for `get_risk_free` and `get_market_index` to avoid direct-call failures when arguments are omitted.
+
 ## [1.2.1] - 2026-08-15
 
 Pipeline resilience and deployment workflow improvements.

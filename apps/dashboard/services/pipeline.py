@@ -10,7 +10,12 @@ from prefect import flow, get_run_logger, task
 
 from antimpt.agents import AntiMPT
 from antimpt.evaluation.backtest import take_positions
-from antimpt.market import consolidate_data, get_equities
+from antimpt.market import (
+    consolidate_data,
+    get_equities,
+    get_market_index,
+    get_risk_free,
+)
 
 from ..models import Dashboard
 
@@ -28,6 +33,18 @@ def fetch_equity_data() -> pd.DataFrame:
     get_run_logger().info(f"Fetched equity data with {len(equity)} rows.")
 
     return equity
+
+
+@task(name="Fetch benchmark data", retries=2, retry_delay_seconds=30)
+def fetch_benchmark_data(
+    equity: pd.DataFrame,
+) -> dict[str, pd.DataFrame]:
+    start, end = equity.index[[0, -1]].strftime("%Y-%m-%d")
+    risk_free = get_risk_free(start, end, src="yfinance")
+    mkt_idx = get_market_index(start, src="yfinance")
+    get_run_logger().info(f"Fetched benchmark data from {start} to {end}.")
+
+    return {"risk_free": risk_free, "mkt_idx": mkt_idx}
 
 
 def create_agent(
@@ -61,13 +78,14 @@ def build_agent_dataframe(
     cfg_agent: dict[str, object],
     agents: list[dict[str, object]],
     equity: pd.DataFrame,
+    benchmarks: dict[str, pd.DataFrame],
     created_at: pd.Timestamp,
 ) -> pd.DataFrame:
     agent = create_agent(cfg_agent, agents)
     algorithm = cfg_agent["algorithm"]
     histories = take_positions(agent, equity, render_mode="robot")
 
-    df = consolidate_data(equity, histories, "yfinance").assign(
+    df = consolidate_data(equity, histories, **benchmarks).assign(
         agent=algorithm,
         created_at=created_at,
     )
@@ -139,8 +157,11 @@ def run_pipeline() -> None:
     dt_update = timezone.now()
 
     equity = fetch_equity_data()
+    benchmarks = fetch_benchmark_data(equity)
     df = pd.concat([
-        build_agent_dataframe(cfg_agent, settings.AGENTS, equity, dt_update)
+        build_agent_dataframe(
+            cfg_agent, settings.AGENTS, equity, benchmarks, dt_update,
+        )
         for cfg_agent in settings.AGENTS
     ])
     persist_snapshot(df, dt_update)

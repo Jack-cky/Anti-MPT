@@ -1,3 +1,4 @@
+from functools import lru_cache
 from pathlib import Path
 
 import pandas as pd
@@ -7,8 +8,17 @@ import yfinance as yf
 PTH_RAW = Path("data", "raw")
 
 
+@lru_cache(maxsize=8)
+def _fetch_market_data_cached(ticker: str, yr: int) -> pd.DataFrame:
+    df = yf.Ticker(ticker).history(start=f"{yr - 1}-01-01")
+    if df.empty:
+        raise RuntimeError(f"yfinance returned no data for {ticker}")
+
+    return df
+
+
 def _fetch_market_data(ticker: str, yr: int = 2025) -> pd.DataFrame:
-    return yf.Ticker(ticker).history(start=f"{yr - 1}-01-01")
+    return _fetch_market_data_cached(ticker, yr).copy()
 
 
 def load_ticker(category: str, ticker: str, src: str, yr: int) -> pd.DataFrame:
