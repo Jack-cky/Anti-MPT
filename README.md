@@ -11,7 +11,7 @@ In contrast, Anti-MPT is risk-seeking and argues against the diversification emp
 <div align="right">
   <a href="https://antimpt.up.railway.app/"><img src="https://custom-icon-badges.demolab.com/badge/Django-092E20?logo=django&logoColor=fff"></a>
   <a href="https://docs.google.com/spreadsheets/d/1hZBngU6REh5M9iyUclPlf8IyO3Iz3ZVW1exo_-vM1ks/pubhtml?gid=928431462&single=true"><img src="https://custom-icon-badges.demolab.com/badge/Backlog-319E4F?logo=Google-Sheets&logoColor=fff"></a>
-  <p><strong>First Published:</strong> 17 June 2025<br><strong>Last Updated:</strong> 19 August 2026</p>
+  <p><strong>First Published:</strong> 17 June 2025<br><strong>Last Updated:</strong> 11 October 2026</p>
 </div>
 
 

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "antimpt"
-version = "1.2.2"
+version = "1.2.3"
 description = "Anti-MPT dashboard and pipeline modules"
 license = { text = "MIT" }
 authors = [{ name = "Jack Chan" }]
@@ -33,8 +33,17 @@ pipeline = [
     "pyarrow==20.0.0",
     "scipy==1.15.3",
     "stable-baselines3==2.6.0",
+    "torch==2.12.0",
     "yfinance==0.2.61",
 ]
 
 [tool.setuptools.packages.find]
 include = ["antimpt*"]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }

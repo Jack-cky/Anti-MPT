@@ -2,9 +2,8 @@ FROM python:3.12.13-slim AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PIP_ROOT_USER_ACTION=ignore \
+    UV_SYSTEM_PYTHON=1 \
+    UV_NO_CACHE=1 \
     DJANGO_ENV=production \
     DJANGO_SETTINGS_MODULE=config.settings
 
@@ -17,7 +16,8 @@ COPY pyproject.toml ./
 
 FROM base AS dashboard
 
-RUN pip install --no-cache-dir --no-compile ".[dashboard]" && \
+RUN --mount=from=ghcr.io/astral-sh/uv:0.10.11,source=/uv,target=/bin/uv \
+    uv pip install ".[dashboard]" && \
     useradd --create-home antimpt && \
     chown -R antimpt:antimpt /app
 
@@ -31,11 +31,8 @@ FROM base AS pipeline
 
 ENV PYTHONPATH=/app/apps
 
-RUN pip install \
-    torch==2.12.0+cpu \
-    --index-url https://download.pytorch.org/whl/cpu \
-    --extra-index-url https://pypi.org/simple && \
-    pip install --no-cache-dir --no-compile ".[pipeline]" && \
+RUN --mount=from=ghcr.io/astral-sh/uv:0.10.11,source=/uv,target=/bin/uv \
+    uv pip install ".[pipeline]" && \
     useradd --create-home antimpt && \
     chown -R antimpt:antimpt /app
 

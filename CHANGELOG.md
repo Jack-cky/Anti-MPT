@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.3] - 2026-10-11
+
+Container dependency installation and dashboard layout improvements.
+
+### Added
+- Added a CPU-only PyTorch package source for reproducible pipeline installations.
+
+### Changed
+- Replaced pip with uv in the dashboard and pipeline Docker images for faster, cache-free dependency installation.
+- Pinned PyTorch in the pipeline dependency group and updated the package version to 1.2.3.
+- Made dashboard plots responsive to viewport height, allowing larger charts on desktop screens while retaining a sensible minimum size.
+
 ## [1.2.2] - 2026-08-19
 
 Hardened the inference pipeline against transient yfinance failures and calendar-gap edge cases.

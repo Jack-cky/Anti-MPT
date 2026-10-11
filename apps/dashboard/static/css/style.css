@@ -193,9 +193,7 @@ p {
 }
 
 .plot-container {
-  height: 28vw;
-  min-height: 180px;
-  max-height: 340px;
+  height: clamp(300px, calc(100vh - 380px), 640px);
   width: 100%;
   position: relative;
   overflow: hidden;
